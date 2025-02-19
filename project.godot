@@ -14,6 +14,15 @@ config/name="Curso-Godot"
 config/features=PackedStringArray("4.3", "Double Precision", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "yellow",
+"res://resources/": "purple",
+"res://scenes/": "blue",
+"res://scripts/": "gray"
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
