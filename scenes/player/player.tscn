@@ -14,7 +14,7 @@ transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 0, 
 shape = SubResource("BoxShape3D_5m45u")
 
 [node name="PlayerModel" parent="CollisionShape" instance=ExtResource("1_2cxba")]
-transform = Transform3D(0.996656, 0, -0.0817124, 0, 1, 0, 0.0817124, 0, 0.996656, 0.0249813, 0.219365, 0.333184)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0249813, 0.219365, 0.333184)
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28162, -1.75283)
@@ -22,3 +22,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28162, -1.75283)
 [node name="FirstPerson" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0505049, 0.0302154)
 current = true
+
+[node name="SecondPerson" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 1, -5)
+
+[node name="ThirdPerson" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7)
