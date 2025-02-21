@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://xe65rhti6bbt"]
+
+[ext_resource type="PackedScene" uid="uid://bfj6rc57kmyei" path="res://scenes/player/player_model.tscn" id="1_2cxba"]
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_ab2ci"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5m45u"]
+size = Vector3(2.48837, 4.79161, 3.48714)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_ab2ci")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 0, 0)
+shape = SubResource("BoxShape3D_5m45u")
+
+[node name="PlayerModel" parent="CollisionShape" instance=ExtResource("1_2cxba")]
+transform = Transform3D(0.996656, 0, -0.0817124, 0, 1, 0, 0.0817124, 0, 0.996656, 0.0249813, 0.219365, 0.333184)
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28162, -1.75283)
+
+[node name="FirstPerson" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0505049, 0.0302154)
+current = true

@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://vwflcwq1ooh8"]
+
+[ext_resource type="Texture2D" uid="uid://bfu44njyn3bpo" path="res://assets/texture/grama.png" id="1_md47f"]
+
+[sub_resource type="VoxelGeneratorFlat" id="VoxelGeneratorFlat_t7eyv"]
+
+[sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_58ga5"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_k7gid"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yl0rl"]
+albedo_texture = ExtResource("1_md47f")
+albedo_texture_force_srgb = true
+emission_energy_multiplier = 0.0
+emission_texture = ExtResource("1_md47f")
+normal_texture = SubResource("CompressedTexture2D_k7gid")
+clearcoat_texture = ExtResource("1_md47f")
+ao_texture = ExtResource("1_md47f")
+uv1_triplanar = true
+
+[node name="Terrain" type="VoxelLodTerrain"]
+generator = SubResource("VoxelGeneratorFlat_t7eyv")
+mesher = SubResource("VoxelMesherTransvoxel_58ga5")
+material = SubResource("StandardMaterial3D_yl0rl")
