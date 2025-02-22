@@ -1,5 +1,104 @@
-[gd_scene load_steps=2 format=3 uid="uid://bfj6rc57kmyei"]
+[gd_scene load_steps=12 format=3 uid="uid://bfj6rc57kmyei"]
 
 [ext_resource type="PackedScene" uid="uid://qky3yibn1p2f" path="res://assets/models/player/player.glb" id="1_smabr"]
 
+[sub_resource type="Animation" id="Animation_rgafg"]
+resource_name = "Idle"
+
+[sub_resource type="Animation" id="Animation_058h8"]
+resource_name = "Walk"
+length = 0.5
+loop_mode = 2
+step = 0.25
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton3D:Perna esquerda")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat64Array(0, 1, 0.270475, 0.270475, 0.653475, 0.653475, 0.5, 1, -0.270525, -0.270525, 0.653475, 0.653475)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton3D:Perna direita")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat64Array(0, 1, -0.270525, 0.270475, -0.653525, 0.653475, 0.5, 1, 0.270475, -0.270525, -0.653525, 0.653475)
+
+[sub_resource type="Animation" id="Animation_m67e6"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton3D:Perna direita")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat64Array(0, 1, -2.66925e-08, 2.66925e-08, -0.707107, 0.707107)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton3D:Perna esquerda")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat64Array(0, 1, -2.66925e-08, -2.66925e-08, 0.707107, 0.707107)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dsxxy"]
+_data = {
+"Idle": SubResource("Animation_rgafg"),
+"RESET": SubResource("Animation_m67e6"),
+"Walk": SubResource("Animation_058h8")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n7xus"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gr5sx"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l1jjq"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qwi2c"]
+reset = false
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vx51d"]
+reset = false
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_g5bqn"]
+states/End/position = Vector2(701, 162)
+states/Idle/node = SubResource("AnimationNodeAnimation_n7xus")
+states/Idle/position = Vector2(467, 162)
+states/Start/position = Vector2(242, 162)
+states/Walk/node = SubResource("AnimationNodeAnimation_gr5sx")
+states/Walk/position = Vector2(467, 50)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_l1jjq"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_qwi2c"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_vx51d")]
+
 [node name="PlayerModel" instance=ExtResource("1_smabr")]
+
+[node name="Skeleton3D" parent="Armação" index="0"]
+bones/3/position = Vector3(-1.11022e-16, 0.5, -8.38195e-24)
+bones/3/rotation = Quaternion(-2.66925e-08, -2.66925e-08, 0.707107, 0.707107)
+bones/3/scale = Vector3(1, 1, 1)
+bones/5/position = Vector3(1.11022e-16, 0.5, -8.38195e-24)
+bones/5/rotation = Quaternion(-2.66925e-08, 2.66925e-08, -0.707107, 0.707107)
+bones/5/scale = Vector3(1, 1, 1)
+
+[node name="Corpo Principal" parent="Armação/Skeleton3D" index="0"]
+extra_cull_margin = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Armação" index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_dsxxy")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="Armação" index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_g5bqn")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/idle = false
+parameters/conditions/walking = false
