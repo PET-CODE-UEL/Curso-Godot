@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmm402b0ycjss"]
+
+[ext_resource type="Texture2D" uid="uid://d0527k6uq5nxy" path="res://assets/background/background.png" id="1_6ykg0"]
+[ext_resource type="Theme" uid="uid://3baqkdeacbqy" path="res://resources/styleboxes/main_menu.tres" id="1_s5acd"]
+[ext_resource type="Script" path="res://scripts/ui/menus/main_menu.gd" id="2_oyvgx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_en14s"]
+font_size = 51
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_s5acd")
+script = ExtResource("2_oyvgx")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6ykg0")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.151235
+anchor_right = 1.0
+anchor_bottom = 0.259259
+grow_horizontal = 2
+text = "Jogo da Fazenda"
+label_settings = SubResource("LabelSettings_en14s")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ButtonMenu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.354167
+anchor_top = 0.395062
+anchor_right = 0.645833
+anchor_bottom = 0.790123
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+metadata/_edit_use_anchors_ = true
+
+[node name="NewGame" type="Button" parent="ButtonMenu"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Novo Jogo"
+
+[node name="Exit" type="Button" parent="ButtonMenu"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Sair"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="Footer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Version" type="Label" parent="MarginContainer/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "V 0.1 Alpha"
+
+[node name="Author" type="Label" parent="MarginContainer/Footer"]
+layout_mode = 2
+text = "PET CODE UEL"
+
+[connection signal="pressed" from="ButtonMenu/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="ButtonMenu/Exit" to="." method="_on_exit_pressed"]
