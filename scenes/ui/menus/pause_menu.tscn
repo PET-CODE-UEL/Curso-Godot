@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://dh4fpl7718lfx"]
+
+[ext_resource type="Script" path="res://scripts/ui/menus/pause_menu.gd" id="1_vbd5k"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vbd5k")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.376471)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Resume" type="Button" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+text = "Retomar"
+
+[node name="MenuExit" type="Button" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+text = "Sair para o Menu Principal"
+
+[node name="DesktopExit" type="Button" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+text = "Sair para a Área de Trabalho"
+
+[connection signal="pressed" from="Center/Panel/Margin/VBox/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/VBox/MenuExit" to="." method="_on_menu_exit_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/VBox/DesktopExit" to="." method="_on_desktop_exit_pressed"]
