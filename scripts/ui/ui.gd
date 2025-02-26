@@ -1,6 +1,7 @@
 class_name UI
 extends CanvasLayer
 
+@onready var inventory: Control = $Inventory
 @onready var pause_menu: Control = $PauseMenu
 
 func _ready() -> void:
@@ -8,4 +9,8 @@ func _ready() -> void:
 
 func _input(event):
     if event.is_action_pressed("ui_cancel"):
-        UIManager.toggle_pause()
+        if UIManager.is_inventory_open:
+            UIManager.toggle_inventory()
+        else:
+            UIManager.toggle_pause()
+        

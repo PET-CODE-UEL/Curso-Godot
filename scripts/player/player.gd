@@ -47,6 +47,9 @@ func _input(event):
 	if event.is_action_pressed("camera_switch"):
 		cycle_camera_mode()
 
+	if event.is_action_pressed("inventory_toggle"):
+		UIManager.toggle_inventory()
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
