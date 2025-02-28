@@ -73,6 +73,9 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("camera_switch"):
 		cycle_camera_mode()
 
+	if event.is_action_pressed("ui_cancel"):
+		UIManager.toggle_pause()
+
 func toggle_visibility(is_first_person: bool) -> void:
 	for child in skeleton.get_children():
 		if child is MeshInstance3D:
