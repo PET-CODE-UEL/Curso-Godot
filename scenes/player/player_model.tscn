@@ -1,5 +1,99 @@
-[gd_scene load_steps=2 format=3 uid="uid://5t0p7paqxmye"]
+[gd_scene load_steps=12 format=3 uid="uid://5t0p7paqxmye"]
 
 [ext_resource type="PackedScene" uid="uid://qky3yibn1p2f" path="res://assets/models/player/player.glb" id="1_li3fg"]
 
+[sub_resource type="Animation" id="Animation_pxp5i"]
+resource_name = "Idle"
+
+[sub_resource type="Animation" id="Animation_kmrp6"]
+resource_name = "Walk"
+length = 0.5
+loop_mode = 2
+step = 0.25
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton3D:Perna direita")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat64Array(0, 1, -0.270525, 0.270475, -0.653525, 0.653475, 0.5, 1, 0.270475, -0.270525, -0.653525, 0.653475)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton3D:Perna esquerda")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat64Array(0, 1, 0.270475, 0.270475, 0.653475, 0.653475, 0.5, 1, -0.270525, -0.270525, 0.653475, 0.653475)
+
+[sub_resource type="Animation" id="Animation_756hr"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton3D:Perna direita")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat64Array(0, 1, -2.66925e-08, 2.66925e-08, -0.707107, 0.707107)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton3D:Perna esquerda")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat64Array(0, 1, -2.66925e-08, -2.66925e-08, 0.707107, 0.707107)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_re116"]
+_data = {
+"Idle": SubResource("Animation_pxp5i"),
+"RESET": SubResource("Animation_756hr"),
+"Walk": SubResource("Animation_kmrp6")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8dyh4"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g0ljx"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7tgfl"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dqsjx"]
+reset = false
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fl4og"]
+reset = false
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_mbe26"]
+states/Idle/node = SubResource("AnimationNodeAnimation_8dyh4")
+states/Idle/position = Vector2(517, 157)
+states/Walk/node = SubResource("AnimationNodeAnimation_g0ljx")
+states/Walk/position = Vector2(517, 48)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_7tgfl"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_dqsjx"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_fl4og")]
+
 [node name="PlayerModel" instance=ExtResource("1_li3fg")]
+
+[node name="Skeleton3D" parent="Armação" index="0"]
+bones/0/rotation = Quaternion(0.000474975, 0.000474975, 0.000474975, -0.999525)
+bones/3/rotation = Quaternion(-2.66925e-08, -2.66925e-08, 0.707107, 0.707107)
+bones/5/rotation = Quaternion(-2.66925e-08, 2.66925e-08, -0.707107, 0.707107)
+
+[node name="Corpo Principal" parent="Armação/Skeleton3D" index="0"]
+extra_cull_margin = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Armação" index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_re116")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="Armação" index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_mbe26")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/idle = false
+parameters/conditions/walking = false

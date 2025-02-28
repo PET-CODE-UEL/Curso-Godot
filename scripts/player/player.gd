@@ -23,8 +23,10 @@ var current_camera_mode : CameraModes = CameraModes.FIRST_PERSON
 @onready var second_person : Camera3D = $CameraPivot/SecondPerson
 @onready var third_person : Camera3D = $CameraPivot/ThirdPerson
 
-
+# Animação
+@onready var animation_tree : AnimationTree = $"CollisionShape/PlayerModel/Armação/AnimationTree"
 @onready var skeleton: Skeleton3D = $"CollisionShape/PlayerModel/Armação/Skeleton3D"
+@onready var head_bone := skeleton.find_bone("Coluna Superior") 
 
 func _ready() -> void:
 	update_camera_mode()
@@ -33,6 +35,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	rotation.y = rotation_horizontal
 	camera_pivot.rotation.x = rotation_vertical
+	var current_pose := skeleton.get_bone_pose(head_bone)
+	current_pose.basis = Basis.from_euler(Vector3(-rotation_vertical,0,0))
+	skeleton.set_bone_pose(head_bone, current_pose)
 
 
 func _physics_process(delta: float) -> void:
@@ -49,9 +54,11 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
+		set_walk(true)
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 	else:
+		set_walk(false)
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
@@ -84,3 +91,7 @@ func cycle_camera_mode():
 	var camera_modes := CameraModes.values()
 	current_camera_mode = camera_modes[(int(current_camera_mode) + 1) % camera_modes.size()]
 	update_camera_mode()
+
+func set_walk(value: bool):
+	animation_tree["parameters/conditions/walking"] = value
+	animation_tree["parameters/conditions/idle"] = not value
