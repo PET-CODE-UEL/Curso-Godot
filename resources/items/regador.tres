@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://bsv0rm01uql6k"]
+
+[ext_resource type="Script" path="res://scripts/ui/inventory/item.gd" id="1_vx3gw"]
+[ext_resource type="Texture2D" uid="uid://dxhfmwxkbdr3j" path="res://assets/icons/regador-icon.png" id="2_hieu6"]
+
+[resource]
+script = ExtResource("1_vx3gw")
+name = "Regador"
+texture = ExtResource("2_hieu6")
+max_stack = 64
+quantity = 1
+price = 20
+can_sell = false

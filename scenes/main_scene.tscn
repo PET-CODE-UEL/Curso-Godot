@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://xgjxv3g40rfw"]
+[gd_scene load_steps=9 format=3 uid="uid://xgjxv3g40rfw"]
 
 [ext_resource type="PackedScene" uid="uid://ypspwrvo0n64" path="res://scenes/player/player.tscn" id="1_7jgx2"]
 [ext_resource type="PackedScene" uid="uid://do4yu4mrv0hpn" path="res://scenes/terrain/terrain.tscn" id="2_dk61n"]
 [ext_resource type="Script" path="res://scripts/ui/ui.gd" id="3_cnvm1"]
 [ext_resource type="PackedScene" uid="uid://trulc70kswkm" path="res://scenes/ui/menus/pause_menu.tscn" id="4_74714"]
+[ext_resource type="PackedScene" uid="uid://hu2fv0qm5iua" path="res://scenes/ui/inventory/inventory.tscn" id="5_inlqd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_linl5"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -40,4 +41,7 @@ script = ExtResource("3_cnvm1")
 
 [node name="PauseMenu" parent="UI" instance=ExtResource("4_74714")]
 process_mode = 2
+visible = false
+
+[node name="Inventory" parent="UI" instance=ExtResource("5_inlqd")]
 visible = false

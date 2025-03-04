@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://o10bs8gnsgcu"]
+
+[ext_resource type="Script" path="res://scripts/ui/inventory/item_slot.gd" id="1_gf3ur"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_w3rdb"]
+font_size = 12
+
+[node name="ItemSlot" type="Button"]
+anchors_preset = -1
+anchor_left = 0.496528
+anchor_top = 0.493827
+anchor_right = 0.560764
+anchor_bottom = 0.608025
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_gf3ur")
+metadata/_edit_use_anchors_ = true
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ItemIcon" type="TextureRect" parent="Margin"]
+layout_mode = 2
+
+[node name="Index" type="Label" parent="Margin"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+label_settings = SubResource("LabelSettings_w3rdb")
+
+[node name="ItemQuantity" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.445946
+anchor_top = 0.689189
+anchor_right = 0.986486
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+horizontal_alignment = 2
+vertical_alignment = 2
+metadata/_edit_use_anchors_ = true
