@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://difjsubfpsgre"]
+[gd_scene load_steps=12 format=3 uid="uid://difjsubfpsgre"]
 
 [ext_resource type="PackedScene" uid="uid://d0i830h3gg5l6" path="res://terrain/terrain.tscn" id="2_pslca"]
 [ext_resource type="Script" path="res://scenes/terrain/terrain.gd" id="3_jlbe3"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cammby2b0x08p" path="res://scenes/ui/inventory/inventory.tscn" id="7_mggcw"]
 [ext_resource type="PackedScene" uid="uid://rkpbsojxx6we" path="res://scenes/ui/shop/shop.tscn" id="8_1ln0c"]
 [ext_resource type="PackedScene" uid="uid://cawj88oyis3pg" path="res://scenes/animals/chicken.tscn" id="10_5fcms"]
+[ext_resource type="PackedScene" uid="uid://bfvwamua164r3" path="res://assets/models/low_poly_farm.glb" id="11_tydqk"]
 
 [node name="Main" type="Node"]
 
@@ -21,7 +22,7 @@ voxel_bounds = AABB(-5.36871e+08, -5.36871e+08, -5.36871e+08, 1.07374e+09, 1.073
 script = ExtResource("3_jlbe3")
 
 [node name="Player" parent="Game" instance=ExtResource("3_lgxfs")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 5.33727, 0)
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0.272576, 2.82957, -10.587)
 
 [node name="Sky" parent="Game" instance=ExtResource("4_kt3le")]
 
@@ -43,3 +44,6 @@ visible = false
 [node name="PauseMenu" parent="UI" instance=ExtResource("4_v3q5l")]
 process_mode = 2
 visible = false
+
+[node name="Fazenda" parent="." instance=ExtResource("11_tydqk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.06529, -27.9471, 37.1186)

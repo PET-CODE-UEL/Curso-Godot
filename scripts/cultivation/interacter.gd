@@ -69,6 +69,7 @@ func _process(_delta):
 # FUNCAO DE COLHER
 func interact():
 	var result = raycast(2) # Camada de colisao 2 -> 010 b = 2 d
+	print("interagiu")
 	if result:
 		if result.collider.get_collision_layer() == 2:
 			var crop = result.collider

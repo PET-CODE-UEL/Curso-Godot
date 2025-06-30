@@ -10,5 +10,5 @@ texture = ExtResource("2_8gw03")
 max_stack = 1
 quantity = 1
 price = 10
-can_sell = true
+can_sell = false
 scene_path = "res://scenes/itens/regador.tscn"

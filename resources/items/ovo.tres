@@ -11,3 +11,4 @@ max_stack = 1000
 quantity = 1
 price = 10
 can_sell = true
+scene_path = ""

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://bquurruwsl1o0"]
+
+[ext_resource type="Script" path="res://scripts/ui/inventory/item.gd" id="1_hckx1"]
+[ext_resource type="Texture2D" uid="uid://rjvpbdxqp5p7" path="res://assets/icons/tomato-icon.png" id="2_vnypw"]
+
+[resource]
+script = ExtResource("1_hckx1")
+name = "Tomate"
+texture = ExtResource("2_vnypw")
+max_stack = 64
+quantity = 1
+price = 50
+can_sell = true
+scene_path = ""

@@ -12,18 +12,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_j7qcy"]
 size = Vector3(2.33863, 4.72286, 3.36939)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_h0erv"]
-
-[sub_resource type="Animation" id="Animation_02ftv"]
-resource_name = "item_anim"
-loop_mode = 2
-tracks/0/type = "rotation_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat64Array(0, 1, 0, 0, 0, 1, 0.5, 1, -0.237508, 0, 0, 0.971386, 1, 1, 0, 0, 0, 1)
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uxbji"]
 
 [sub_resource type="Animation" id="Animation_jj3ao"]
 length = 0.001
@@ -35,6 +24,16 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat64Array(0, 1, 0, 0, 0, 1)
 
+[sub_resource type="Animation" id="Animation_s0gvd"]
+resource_name = "idle"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat64Array()
+
 [sub_resource type="Animation" id="Animation_cq4ri"]
 resource_name = "interagir"
 tracks/0/type = "rotation_3d"
@@ -45,15 +44,16 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat64Array(0, 1, 0, 0, 0, 1, 1, 1, -0.596715, 0, 0, 0.802453)
 
-[sub_resource type="Animation" id="Animation_s0gvd"]
-resource_name = "idle"
+[sub_resource type="Animation" id="Animation_02ftv"]
+resource_name = "item_anim"
+loop_mode = 2
 tracks/0/type = "rotation_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat64Array()
+tracks/0/keys = PackedFloat64Array(0, 1, 0, 0, 0, 1, 0.5, 1, -0.237508, 0, 0, 0.971386, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7gti0"]
 _data = {
@@ -140,7 +140,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.31517, -0.177245, -2.00986)
 script = ExtResource("8_f5vlf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
-mesh = SubResource("CylinderMesh_h0erv")
+visible = false
+mesh = SubResource("CapsuleMesh_uxbji")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Hand"]
 libraries = {
