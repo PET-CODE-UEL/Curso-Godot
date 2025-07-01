@@ -76,38 +76,73 @@ func load(inventory_data: Dictionary):
 				item.quantity = item_data["quantity"]
 				row.slots[col] = item
 				item_index += 1
-
-
 # Função para adicionar um item ao inventário
 func add_item_to_inventory(new_item: Item) -> bool:
-	# Procura no inventário um item igual para empilhar
-	for row in inventory_items:
+	var hotbar_row := inventory_items[ROWS - 1]
+	var inventory_rows := inventory_items.slice(0, ROWS - 1)
+
+	# 1. Tenta empilhar na hotbar
+	for i in range(HOTBAR_SIZE):
+		var existing_item = hotbar_row.slots[i]
+		if (
+			existing_item
+			and existing_item.name == new_item.name
+			and existing_item.quantity < existing_item.max_stack
+		):
+			var space = existing_item.max_stack - existing_item.quantity
+			var to_add = min(space, new_item.quantity)
+			existing_item.quantity += to_add
+			new_item.quantity -= to_add
+			if new_item.quantity <= 0:
+				inventory_updated.emit()
+				return true
+
+	# 2. Tenta empilhar no inventário
+	for row in inventory_rows:
 		for i in range(row.slots.size()):
-			var existing_item := row.slots[i]
+			var existing_item = row.slots[i]
 			if (
 				existing_item
 				and existing_item.name == new_item.name
 				and existing_item.quantity < existing_item.max_stack
 			):
-				var available_space = existing_item.max_stack - existing_item.quantity
-				var quantity_to_add = min(new_item.quantity, available_space)
-				existing_item.quantity += quantity_to_add
-				new_item.quantity -= quantity_to_add
+				var space = existing_item.max_stack - existing_item.quantity
+				var to_add = min(space, new_item.quantity)
+				existing_item.quantity += to_add
+				new_item.quantity -= to_add
 				if new_item.quantity <= 0:
 					inventory_updated.emit()
 					return true
 
-	# Caso não tenha espaço para empilhar, tenta encontrar um slot vazio no inventário
-	for row in inventory_items:
-		for i in range(row.slots.size()):
-			if row.slots[i] == null:
-				row.slots[i] = new_item.clone()
-				inventory_updated.emit()
-				return true
+	if new_item.quantity > 0:
+		# Distribui unidade por unidade restante
+		var remaining = new_item.quantity
 
-	# Inventário cheio
+		# 1. Hotbar
+		for i in range(HOTBAR_SIZE):
+			if remaining <= 0:
+				break
+			if hotbar_row.slots[i] == null:
+				var clone = new_item.clone()
+				clone.quantity = 1
+				hotbar_row.slots[i] = clone
+				remaining -= 1
+
+		# 2. Inventário
+		for row in inventory_rows:
+			for i in range(row.slots.size()):
+				if remaining <= 0:
+					break
+				if row.slots[i] == null:
+					var clone = new_item.clone()
+					clone.quantity = 1
+					row.slots[i] = clone
+					remaining -= 1
+
+		inventory_updated.emit()
+		return remaining <= 0
+		# Nenhum espaço disponível
 	return false
-
 
 # Função para remover um item do inventário
 func remove_item_from_inventory(item_name: String, quantity: int) -> bool:
@@ -142,3 +177,37 @@ func remove_item_from_inventory(item_name: String, quantity: int) -> bool:
 	# Remoção concluída com sucesso
 	inventory_updated.emit()
 	return true
+	
+func print_inventory_state(title: String = ""):
+	print("=== INVENTÁRIO DO JOGADOR === ", title)
+	for row_idx in range(inventory_items.size()):
+		var row = inventory_items[row_idx]
+		for col_idx in range(row.slots.size()):
+			var item = row.slots[col_idx]
+			if item != null:
+				print("  Slot [", row_idx, ",", col_idx, "] = ", item.name, " x", item.quantity)
+			else:
+				print("  Slot [", row_idx, ",", col_idx, "] = vazio")
+	print("==============================")
+	
+func normalize_inventory():
+	var seen := {}
+
+	for row in inventory_items:
+		for i in range(row.slots.size()):
+			var item = row.slots[i]
+			if item:
+				if not seen.has(item.name):
+					seen[item.name] = item  # Primeiro encontrado
+				else:
+					var main_item = seen[item.name]
+					var space = main_item.max_stack - main_item.quantity
+					var to_add = min(space, item.quantity)
+					main_item.quantity += to_add
+					item.quantity -= to_add
+
+					# Se o duplicado estiver vazio, remove
+					if item.quantity <= 0:
+						row.slots[i] = null
+
+	inventory_updated.emit()

@@ -166,6 +166,8 @@ collect_egg={
 3d_physics/layer_2="crop"
 3d_physics/layer_3="plant_area"
 3d_physics/layer_4="player"
+3d_physics/layer_5="veiculos"
+3d_physics/layer_8="proibido"
 
 [rendering]
 

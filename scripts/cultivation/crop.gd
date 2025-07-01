@@ -22,15 +22,41 @@ func get_crop_type():
 	return crop_type
 
 func interact():
-	if harvestable: # DESTROI INSTANCIA APOS COLHER
-		queue_free()
+	if not harvestable:
+		return
 
+	var inventory_manager = get_node("/root/InventoryManager")
+	var item_path := get_crop_resource_path(crop_type)
+
+	if item_path != "":
+		var crop_resource = load(item_path)
+		if crop_resource:
+			for i in harvest_amount:
+				var crop_item = crop_resource.duplicate()
+				inventory_manager.add_item_to_inventory(crop_item)
+		else:
+			print("Erro ao carregar recurso: ", item_path)
+	else:
+		print("Tipo de planta inválido ou não definido")
+
+	queue_free()
+
+
+func get_crop_resource_path(crop_type: CropTypes.CROP_TYPE) -> String:
+	match crop_type:
+		CropTypes.CROP_TYPE.CORN:
+			return "res://resources/items/corn.tres"
+		CropTypes.CROP_TYPE.TOMATO:
+			return "res://resources/items/tomato.tres"
+		_:
+			return ""
+		
 func update_prompt_text(): # INTERFACE DO JOGO
 	if harvestable:
-		return "Click MOUSE 2 to Harvest"
+		return "Botao Esquerdo do Mouse para Colher"
 	else :
 		if !watered:
-			return "Press R to Water"
+			return "Aperte R para Regar"
 		return ""
 
 # PROCESSA CRESCIMENTO DA PLANTA

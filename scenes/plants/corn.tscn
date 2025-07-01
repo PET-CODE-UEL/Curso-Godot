@@ -21,6 +21,7 @@ height = 0.307257
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 collision_layer = 2
 script = ExtResource("1_1qt1c")
+harvest_amount = 5
 
 [node name="Large" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.955381, 0)

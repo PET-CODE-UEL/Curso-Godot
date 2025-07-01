@@ -2,7 +2,7 @@ class_name Player
 extends CharacterBody3D
 
 # Movimentação
-const SPEED = 5.0
+const SPEED = 8.0
 const JUMP_VELOCITY = 4.5
 
 # Movimentação da Câmera
@@ -28,11 +28,30 @@ var current_camera_mode: CameraModes = CameraModes.FIRST_PERSON
 @onready var animation_tree: AnimationTree = $"CollisionShape3D/PlayerModel/Armação/AnimationTree"
 @onready var skeleton: Skeleton3D = $"CollisionShape3D/PlayerModel/Armação/Skeleton3D"
 @onready var head_bone := skeleton.find_bone("Coluna Superior")
-@onready var hand_anim_tree : AnimationTree = $Hand/AnimationTree
+@onready var hand_anim_tree : AnimationTree = $CameraPivot/FirstPerson/Hand/AnimationTree
 @onready var hand_anim_state: AnimationNodeStateMachinePlayback = hand_anim_tree.get("parameters/playback")
 
 #----------------------------- Interação -------------------------------------------
 @onready var interacter = $Interacter
+var vehicle_to_follow: Node3D = null
+var is_mounted = false
+func mount_vehicle(vehicle_node: Node3D):
+	is_mounted = true
+	vehicle_to_follow = vehicle_node
+	set_process(false)
+	set_physics_process(false)
+	set_process_input(false)
+	set_process_unhandled_input(false)
+	visible = false
+
+func dismount_vehicle():
+	is_mounted = false
+	vehicle_to_follow = null
+	set_process(true)
+	set_physics_process(true)
+	set_process_input(true)
+	set_process_unhandled_input(true)
+	visible = true
 
 
 func _ready():
@@ -50,6 +69,10 @@ func print_tree_structure(node: Node = get_tree().current_scene, indent: String 
 
 
 func _process(_delta):
+	if is_mounted and vehicle_to_follow:
+		print("A")
+		global_transform = vehicle_to_follow.global_transform
+		return  # Impede o resto do código do player de rodar
 	rotation.y = rotation_horizontal
 	camera_pivot.rotation.x = rotation_vertical
 	var current_pose := skeleton.get_bone_pose(head_bone)

@@ -13,6 +13,10 @@ func _ready():
 	InventoryManager.add_item_to_inventory(foice)
 	var regador: Item = load("res://resources/items/regador.tres")
 	InventoryManager.add_item_to_inventory(regador)
+	var tomate: Item = load("res://resources/items/tomato.tres")
+	InventoryManager.add_item_to_inventory(tomate)
+	var milho: Item = load("res://resources/items/corn.tres")
+	InventoryManager.add_item_to_inventory(milho)
 
 # Inicializa a interface com os slots
 func initialize_ui():

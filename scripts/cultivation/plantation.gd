@@ -6,8 +6,8 @@ var fertilized = false # CHECA SE JA FERTILIZOU NESTE DIA
 
 func update_prompt_text(): # INTERFACE DO JOGO
 	if !fertilized: 
-		return "Press F to Fertilize "
+		return "Aperte F para Fertilizar "
 	else: 
 		if !occupied:
-			return "Click MOUSE 1 to Plant"
+			return "Botao Direito do Mouse Para Plantar"
 		return ""

@@ -21,6 +21,10 @@ func setup_slots():
 func update_hotbar():
 	for i in range(InventoryManager.HOTBAR_SIZE):
 		slots[i].set_item(InventoryManager.get_hotbar_item(i))
+	
+	# 🔥 Atualiza o item na mão caso o slot selecionado tenha sido modificado
+	slot_selected.emit(selected_index)
+
 
 func _input(event):
 	for i in range(9):

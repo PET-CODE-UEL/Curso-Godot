@@ -15,6 +15,14 @@ func _init():
 		shop_items.append(Utils.ItemRow.new(COLUMNS))
 	load_items_to_shop()
 
+func add_item_to_shop(item: Item) -> bool:
+	for i in range(SHOP_SIZE):
+		var existing_item = get_shop_item(i)
+		if existing_item == null:
+			set_shop_item(i, item.clone())
+			return true
+	return false  # Loja cheia
+
 func load_items_to_shop():
 	var items: Array[Item] = load("res://resources/shop/shop_items.tres").items
 	var item_index := 0
@@ -42,6 +50,8 @@ func remove_money(amount: int) -> bool:
 
 func buy_item(item: Item) -> bool:
 	if remove_money(item.price):
+		InventoryManager.print_inventory_state("DEPOIS DA COMPRA ✅ SUCESSO")
+		InventoryManager.normalize_inventory()
 		return true
 	return false
 

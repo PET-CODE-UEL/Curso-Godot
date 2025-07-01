@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://7n308h1dj5ff"]
+
+[ext_resource type="Script" path="res://scenes/player/moto.gd" id="1_yxe83"]
+[ext_resource type="PackedScene" uid="uid://ih6aul8i5bxl" path="res://assets/models/moto.glb" id="2_m5qkv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fby37"]
+size = Vector3(0.354784, 1, 2.36713)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gpnhq"]
+size = Vector3(1, 1.50105, 2.9929)
+
+[node name="Moto" type="CharacterBody3D"]
+collision_layer = 16
+collision_mask = 145
+script = ExtResource("1_yxe83")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0566195, 0.556516, -0.00841287)
+shape = SubResource("BoxShape3D_fby37")
+
+[node name="MotoMesh" type="MeshInstance3D" parent="."]
+
+[node name="Sketchfab_Scene" parent="MotoMesh" instance=ExtResource("2_m5qkv")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 0, 0)
+
+[node name="InteractArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="InteractionShape" type="CollisionShape3D" parent="InteractArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776713, -0.110014)
+shape = SubResource("BoxShape3D_gpnhq")
+
+[node name="MountPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07933, -0.354892)

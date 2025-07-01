@@ -107,6 +107,7 @@ transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 8
+collision_mask = 145
 script = ExtResource("1_qq77i")
 
 [node name="Interacter" type="Node3D" parent="."]
@@ -128,29 +129,30 @@ transform = Transform3D(1, 0, 2.44929e-16, 0, 1, 0, -2.44929e-16, 0, 1, -0.02437
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0447782, 0.973655, -1.07445)
 
 [node name="FirstPerson" type="Camera3D" parent="CameraPivot"]
+current = true
+
+[node name="Hand" type="Node3D" parent="CameraPivot/FirstPerson"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27039, -1.1509, -0.93541)
+script = ExtResource("8_f5vlf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraPivot/FirstPerson/Hand"]
+visible = false
+mesh = SubResource("CapsuleMesh_uxbji")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CameraPivot/FirstPerson/Hand"]
+libraries = {
+"": SubResource("AnimationLibrary_7gti0")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="CameraPivot/FirstPerson/Hand"]
+tree_root = SubResource("AnimationNodeStateMachine_gwswr")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/idle = false
+parameters/conditions/interagindo = false
+parameters/conditions/walking = false
 
 [node name="SecondPerson" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(-1, -3.16962e-17, 1.18292e-16, 0, 0.965926, 0.258819, -1.22465e-16, 0.258819, -0.965926, 0, 2, -8)
 
 [node name="ThirdPerson" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 2, 8)
-
-[node name="Hand" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.31517, -0.177245, -2.00986)
-script = ExtResource("8_f5vlf")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
-visible = false
-mesh = SubResource("CapsuleMesh_uxbji")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Hand"]
-libraries = {
-"": SubResource("AnimationLibrary_7gti0")
-}
-
-[node name="AnimationTree" type="AnimationTree" parent="Hand"]
-tree_root = SubResource("AnimationNodeStateMachine_gwswr")
-anim_player = NodePath("../AnimationPlayer")
-parameters/conditions/idle = false
-parameters/conditions/interagindo = false
-parameters/conditions/walking = false

@@ -1,16 +1,160 @@
-[gd_scene load_steps=12 format=3 uid="uid://difjsubfpsgre"]
+[gd_scene load_steps=21 format=3 uid="uid://difjsubfpsgre"]
 
 [ext_resource type="PackedScene" uid="uid://d0i830h3gg5l6" path="res://terrain/terrain.tscn" id="2_pslca"]
 [ext_resource type="Script" path="res://scenes/terrain/terrain.gd" id="3_jlbe3"]
 [ext_resource type="PackedScene" uid="uid://brnjfmevhvwcy" path="res://scenes/player/player.tscn" id="3_lgxfs"]
-[ext_resource type="PackedScene" uid="uid://ddyfmboh8f1ar" path="res://scenes/terrain/sky.tscn" id="4_kt3le"]
 [ext_resource type="PackedScene" uid="uid://ccgiwlyxfyqd8" path="res://scenes/ui/menus/pause_menu.tscn" id="4_v3q5l"]
 [ext_resource type="Script" path="res://scripts/ui/ui.gd" id="5_yny47"]
 [ext_resource type="PackedScene" uid="uid://dh47wok31jfx0" path="res://scenes/ui/hud.tscn" id="6_umggq"]
 [ext_resource type="PackedScene" uid="uid://cammby2b0x08p" path="res://scenes/ui/inventory/inventory.tscn" id="7_mggcw"]
 [ext_resource type="PackedScene" uid="uid://rkpbsojxx6we" path="res://scenes/ui/shop/shop.tscn" id="8_1ln0c"]
 [ext_resource type="PackedScene" uid="uid://cawj88oyis3pg" path="res://scenes/animals/chicken.tscn" id="10_5fcms"]
+[ext_resource type="PackedScene" uid="uid://utpbxh01lk2" path="res://scenes/AreaProibida.tscn" id="11_6dhrt"]
 [ext_resource type="PackedScene" uid="uid://bfvwamua164r3" path="res://assets/models/low_poly_farm.glb" id="11_tydqk"]
+
+[sub_resource type="Shader" id="Shader_amoae"]
+code = "
+// NOTE: Shader automatically converted from Godot Engine 4.3.stable's ProceduralSkyMaterial.
+
+shader_type sky;
+render_mode use_debanding;
+
+uniform vec4 sky_top_color : source_color = vec4(0.385, 0.454, 0.55, 1.0);
+uniform vec4 sky_horizon_color : source_color = vec4(0.646, 0.656, 0.67, 1.0);
+uniform float sky_curve : hint_range(0, 1) = 0.15;
+uniform float sky_energy = 1.0; // In Lux.
+uniform sampler2D sky_cover : filter_linear, source_color, hint_default_black;
+uniform vec4 sky_cover_modulate : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 ground_bottom_color : source_color = vec4(0.2, 0.169, 0.133, 1.0);
+uniform vec4 ground_horizon_color : source_color = vec4(0.646, 0.656, 0.67, 1.0);
+uniform float ground_curve : hint_range(0, 1) = 0.02;
+uniform float ground_energy = 1.0;
+uniform float sun_angle_max = 30.0;
+uniform float sun_curve : hint_range(0, 1) = 0.15;
+uniform float exposure : hint_range(0, 128) = 1.0;
+
+uniform sampler2D cloud_texture;
+uniform sampler2D cloud_texture2;
+
+uniform vec2 cloud_direction;
+uniform vec2 cloud_direction2;
+uniform vec2 cloud_scale;
+uniform float cloud_distance;
+uniform float cloud_speed;
+uniform float cloud_speed2;
+
+
+void sky() {
+	float v_angle = acos(clamp(EYEDIR.y, -1.0, 1.0));
+	float c = (1.0 - v_angle / (PI * 0.5));
+	vec3 sky = mix(sky_horizon_color.rgb, sky_top_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / sky_curve), 0.0, 1.0));
+	sky *= sky_energy;
+
+	if (LIGHT0_ENABLED) {
+		float sun_angle = acos(dot(LIGHT0_DIRECTION, EYEDIR));
+		if (sun_angle < LIGHT0_SIZE) {
+			sky = LIGHT0_COLOR * LIGHT0_ENERGY;
+		} else if (sun_angle < sun_angle_max) {
+			float c2 = (sun_angle - LIGHT0_SIZE) / (sun_angle_max - LIGHT0_SIZE);
+			sky = mix(LIGHT0_COLOR * LIGHT0_ENERGY, sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
+		}
+	}
+
+	if (LIGHT1_ENABLED) {
+		float sun_angle = acos(dot(LIGHT1_DIRECTION, EYEDIR));
+		if (sun_angle < LIGHT1_SIZE) {
+			sky = LIGHT1_COLOR * LIGHT1_ENERGY;
+		} else if (sun_angle < sun_angle_max) {
+			float c2 = (sun_angle - LIGHT1_SIZE) / (sun_angle_max - LIGHT1_SIZE);
+			sky = mix(LIGHT1_COLOR * LIGHT1_ENERGY, sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
+		}
+	}
+
+	if (LIGHT2_ENABLED) {
+		float sun_angle = acos(dot(LIGHT2_DIRECTION, EYEDIR));
+		if (sun_angle < LIGHT2_SIZE) {
+			sky = LIGHT2_COLOR * LIGHT2_ENERGY;
+		} else if (sun_angle < sun_angle_max) {
+			float c2 = (sun_angle - LIGHT2_SIZE) / (sun_angle_max - LIGHT2_SIZE);
+			sky = mix(LIGHT2_COLOR * LIGHT2_ENERGY, sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
+		}
+	}
+
+	if (LIGHT3_ENABLED) {
+		float sun_angle = acos(dot(LIGHT3_DIRECTION, EYEDIR));
+		if (sun_angle < LIGHT3_SIZE) {
+			sky = LIGHT3_COLOR * LIGHT3_ENERGY;
+		} else if (sun_angle < sun_angle_max) {
+			float c2 = (sun_angle - LIGHT3_SIZE) / (sun_angle_max - LIGHT3_SIZE);
+			sky = mix(LIGHT3_COLOR * LIGHT3_ENERGY, sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
+		}
+	}
+
+	vec4 sky_cover_texture = texture(sky_cover, SKY_COORDS);
+	sky += (sky_cover_texture.rgb * sky_cover_modulate.rgb) * sky_cover_texture.a * sky_cover_modulate.a * sky_energy;
+
+	c = (v_angle - (PI * 0.5)) / (PI * 0.5);
+	vec3 ground = mix(ground_horizon_color.rgb, ground_bottom_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / ground_curve), 0.0, 1.0));
+	ground *= ground_energy;
+
+	vec2 sky_uv = EYEDIR.xz / EYEDIR.y;
+	vec3 clouds = texture(cloud_texture, sky_uv * cloud_scale - TIME * cloud_direction * cloud_speed).rgb - texture(cloud_texture2, sky_uv * cloud_scale + TIME * cloud_direction2 * cloud_speed2).rgb;
+	clouds = clamp(clouds, 0.0,1.0);
+	sky +=clouds;
+	
+	COLOR = mix(ground, sky, step(0.0, EYEDIR.y)) * exposure;
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lx0o4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_uuc12"]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_lx0o4")
+
+[sub_resource type="Gradient" id="Gradient_iut3j"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3s0de"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sn3op"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_iut3j")
+noise = SubResource("FastNoiseLite_3s0de")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bm85e"]
+shader = SubResource("Shader_amoae")
+shader_parameter/sky_top_color = Color(0.392157, 0.74902, 1, 0)
+shader_parameter/sky_horizon_color = Color(0.764706, 0.87451, 0.607843, 0)
+shader_parameter/sky_curve = 0.15
+shader_parameter/sky_energy = 1.0
+shader_parameter/sky_cover_modulate = Color(1, 1, 1, 0)
+shader_parameter/ground_bottom_color = Color(0.580392, 0.87451, 1, 0)
+shader_parameter/ground_horizon_color = Color(0.580392, 0.87451, 1, 1)
+shader_parameter/ground_curve = 0.02
+shader_parameter/ground_energy = 1.0
+shader_parameter/sun_angle_max = 0.523599
+shader_parameter/sun_curve = 0.166
+shader_parameter/exposure = 1.0
+shader_parameter/cloud_direction = Vector2(0, 1)
+shader_parameter/cloud_direction2 = Vector2(1, 0)
+shader_parameter/cloud_scale = Vector2(0.1, 0.1)
+shader_parameter/cloud_distance = 0.035
+shader_parameter/cloud_speed = 0.001
+shader_parameter/cloud_speed2 = 0.009
+shader_parameter/cloud_texture = SubResource("NoiseTexture2D_uuc12")
+shader_parameter/cloud_texture2 = SubResource("NoiseTexture2D_sn3op")
+
+[sub_resource type="Sky" id="Sky_461pe"]
+sky_material = SubResource("ShaderMaterial_bm85e")
+
+[sub_resource type="Environment" id="Environment_sgss3"]
+background_mode = 2
+background_energy_multiplier = 1.05
+sky = SubResource("Sky_461pe")
 
 [node name="Main" type="Node"]
 
@@ -21,13 +165,19 @@ process_mode = 1
 voxel_bounds = AABB(-5.36871e+08, -5.36871e+08, -5.36871e+08, 1.07374e+09, 1.07374e+09, 1.07374e+09)
 script = ExtResource("3_jlbe3")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Game"]
+environment = SubResource("Environment_sgss3")
+
 [node name="Player" parent="Game" instance=ExtResource("3_lgxfs")]
 transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0.272576, 2.82957, -10.587)
 
-[node name="Sky" parent="Game" instance=ExtResource("4_kt3le")]
-
 [node name="chicken" parent="Game" instance=ExtResource("10_5fcms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.956921, 0.02, 1.79959)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Game"]
+transform = Transform3D(1, 0, 0, 0, -0.632232, 0.774779, 0, -0.774779, -0.632232, 0, 7.23084, 0)
+light_color = Color(0.605274, 0.605274, 0.605274, 1)
+shadow_enabled = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -47,3 +197,54 @@ visible = false
 
 [node name="Fazenda" parent="." instance=ExtResource("11_tydqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.06529, -27.9471, 37.1186)
+
+[node name="AreaProibida" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(1, 0, 0, 0, 2.933, 0, 0, 0, 121.485, 9.45209, 29.4065, 18.1229)
+
+[node name="AreaProibida2" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(6.12323e-17, 0, -109.707, 0, 3.29524, 0, 1, 0, 6.7176e-15, 64.0932, 29.25, -43.3303)
+
+[node name="AreaProibida3" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(44.6437, 0, 0, 0, -14.1416, 0, 0, 0, 26.0695, -33.9288, 34.2344, -45.2125)
+
+[node name="AreaProibida4" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(15.3535, 0, 0, 0, 9.97052, 0, 0, 0, 32.7387, -48.6536, 28.2206, -18.4108)
+
+[node name="AreaProibida5" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(15.3006, 0, 0, 0, 9.0699, 0, 0, 0, 16.9468, -18.9958, 28.8171, -23.5031)
+
+[node name="AreaProibida6" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(23.5202, 0, 0, 0, 31.4787, 0, 0, 0, 37.2139, 21.0407, 27.9671, -83.6673)
+
+[node name="AreaProibida7" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(9.71078, 0, 0, 0, 9.71078, 0, 0, 0, 24.002, 32.8503, 31.4133, -89.5279)
+
+[node name="AreaProibida8" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(15.3497, 0, 0, 0, 17.4686, 0, 0, 0, 30.7197, 79.2896, 28.2793, -91.2612)
+
+[node name="AreaProibida9" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(1, 0, 0, 0, 2.52529, 0, 0, 0, 69.0456, -11.9644, 29.086, 43.4618)
+
+[node name="AreaProibida10" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(64.9379, 0, 0, 0, 3.16187, 0, 0, 0, 1, -44.43, 28.5333, 8.81204)
+
+[node name="AreaProibida11" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(1, 0, 0, 0, 2.596, 0, 0, 0, 193.02, -76.242, 29.0372, -21.1646)
+
+[node name="AreaProibida12" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(193.281, 0, 0, 0, 3.45106, 0, 0, 0, 1, 21.6627, 29.2596, 78.5927)
+
+[node name="AreaProibida13" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(1, 0, 0, 0, 3.71588, 0, 0, 0, 118.538, 119.197, 29.0891, 16.5307)
+
+[node name="AreaProibida14" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(1, 0, 0, 0, 3.54338, 0, 0, 0, 62.172, 119.238, 29.0824, -92.6044)
+
+[node name="AreaProibida15" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(192.619, 0, 0, 0, 3.15854, 0, 0, 0, 1, 21.7207, 29.0612, -122.573)
+
+[node name="AreaProibida16" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(9.0287, 0, 0, 0, 8.37738, 0, 0, 0, 8.94362, -39.3317, 31.9294, -66.0688)
+
+[node name="AreaProibida17" parent="Fazenda" instance=ExtResource("11_6dhrt")]
+transform = Transform3D(7.75818, 0, 0, 0, 12.7741, 0, 0, 0, 9.93893, 65.1738, 29.2, -88.2885)

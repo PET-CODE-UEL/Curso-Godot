@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://du3bgligh2w48"]
+
+[ext_resource type="Script" path="res://scripts/ui/inventory/item.gd" id="1_r3aga"]
+[ext_resource type="Texture2D" uid="uid://couriry5oftc4" path="res://assets/icons/milho-icon.png" id="2_2lftg"]
+
+[resource]
+script = ExtResource("1_r3aga")
+name = "Milho"
+texture = ExtResource("2_2lftg")
+max_stack = 64
+quantity = 1
+price = 100
+can_sell = true
+scene_path = ""

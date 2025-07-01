@@ -10,6 +10,10 @@ func _ready():
 	InventoryManager.inventory_updated.connect(refresh_ui)
 	ShopManager.shop_updated.connect(refresh_ui)
 	ShopManager.money_updated.connect(refresh_money)
+	var tomate = load("res://resources/items/tomato.tres")
+	ShopManager.add_item_to_shop(tomate)
+	var milho = load("res://resources/items/corn.tres")
+	ShopManager.add_item_to_shop(milho)
 
 func initialize_ui():
 	clear_children(player_inventory_grid)

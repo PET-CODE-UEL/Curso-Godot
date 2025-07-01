@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://utpbxh01lk2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k83vh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qsdy7"]
+
+[node name="AreaProibida" type="Node3D"]
+visible = false
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 128
+collision_mask = 128
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_k83vh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
+layers = 128
+mesh = SubResource("BoxMesh_qsdy7")

@@ -55,28 +55,32 @@ func _can_drop_data(_position, data):
 func _drop_data(_position, data):
 	var src_slot: ItemSlot = data
 	var dst_slot: ItemSlot = self
-
+	
 	if not src_slot or not dst_slot:
 		return
 
 	var transaction_success = false
-
 	# Se estiver arrastando um item do inventário para a loja -> VENDA
 	if src_slot.is_in_group("inventory_slots") and dst_slot.is_in_group("shop_slots"):
 		transaction_success = ShopManager.sell_item(src_slot.dragged_item)
 		if transaction_success:
 			InventoryManager.set_inventory_item(src_slot.slot_index, null)
-
 	# Se estiver arrastando um item da loja para o inventário -> COMPRA
 	elif src_slot.is_in_group("shop_slots") and dst_slot.is_in_group("inventory_slots"):
-		transaction_success = not dst_slot.item and ShopManager.buy_item(src_slot.dragged_item)
-		if transaction_success:
-			InventoryManager.set_inventory_item(dst_slot.slot_index, src_slot.dragged_item)
-
+		if ShopManager.remove_money(src_slot.dragged_item.price):
+			var clone = src_slot.dragged_item.clone()
+			clone.quantity = 1
+			transaction_success = InventoryManager.add_item_to_inventory(clone)
+			if transaction_success:
+				InventoryManager.normalize_inventory()
+			else:
+				# Se não conseguiu adicionar (inventário cheio), reembolsa
+				ShopManager.add_money(src_slot.dragged_item.price)
 	# Se estiver arrastando um item do inventário para o inventário -> TROCA
 	elif src_slot.is_in_group("inventory_slots") and dst_slot.is_in_group("inventory_slots"):
 		transaction_success = true
 		InventoryManager.swap_items(src_slot.slot_index, dst_slot.slot_index)
+		
 
 	# Se a transação falhar, devolve o item ao slot original
 	if not transaction_success and src_slot.dragged_item:
